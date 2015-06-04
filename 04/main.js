@@ -3,12 +3,17 @@ var ctx = myCanvas.getContext("2d");
 
 var KEY = { UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, ENTER: 13, SPACE: 32, ESC: 27 };
 
-var N = 10;
-var M = 10;
+var N = 50;
+var M = 50;
 var board;
-var snake = new Array();
+var snake;
 
 var cellSize = 10;
+
+var DIRECTION = { RIGHT: 0, DOWN: 1, LEFT: 2, UP: 3 };
+
+var currentTime;
+var lastTime;
 
 function initGame(){
     board = new Array(N);
@@ -17,9 +22,25 @@ function initGame(){
         for (j = 0; j < M; ++j)
             board[i][j] = 0;
     }
-    snake.push(new body(0,0));
-    snake.push(new body(0,1));
-    snake.push(new body(0,2));
+    snake = new Snake();
+    currentTime = lastTime = new Date().getTime();
+}
+function copy(obj)
+{
+    var clone = {}; // новый пустой объект
+// скопируем в него все свойства user
+    for (var key in obj) {
+        clone[key] = obj[key];
+    }
+}
+
+function Snake(){
+    this.body = new Array();
+    this.body.push(new body(0,0));
+    this.body.push(new body(0,1));
+    this.body.push(new body(0,2));
+    this.dir = DIRECTION.DOWN;
+    this.speed = 1; // скорость перемещения змейки (ячеек в секунду)
 }
 
 function body(x,y){
@@ -46,9 +67,19 @@ function doStep(){
 
 // обновить состояние игры
 function update() {
-    for(i = 0; i < snake.length; i++)
+    var i;
+    switch (snake.dir)
     {
-        board[snake[i].y][snake[i].x] = 1;
+        case DIRECTION.DOWN:
+                snake.body.shift();
+                snake.body.push( new body( snake.body[snake.body.length - 1].x, snake.body[snake.body.length - 1].y+1 ));
+            break;
+        case DIRECTION.UP:
+            break;
+        case DIRECTION.LEFT:
+            break;
+        case DIRECTION.RIGHT:
+            break;
     }
 }
 
@@ -66,6 +97,12 @@ function draw() {
             ctx.fillRect( j * cellSize, i * cellSize,
                           cellSize - 2, cellSize - 2);
         }
+    }
+    ctx.fillStyle = "#ff0000";
+    for(i = 0; i < snake.body.length; i++)
+    {
+        ctx.fillRect( snake.body[i].x * cellSize, snake.body[i].y * cellSize,
+            cellSize - 2, cellSize - 2);
     }
 }
 
