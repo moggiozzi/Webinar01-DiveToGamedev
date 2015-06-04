@@ -8,6 +8,8 @@ var M = 50;
 var board;
 var snake;
 
+var food;
+
 var cellSize = 10;
 
 var DIRECTION = { RIGHT: 0, DOWN: 1, LEFT: 2, UP: 3 };
@@ -24,6 +26,7 @@ function initGame(){
     }
     snake = new Snake();
     currentTime = lastTime = new Date().getTime();
+    food = new body( Math.ceil( Math.random()*N ), Math.ceil( Math.random() *M ) );
 }
 function copy(obj)
 {
@@ -110,6 +113,8 @@ function draw() {
         ctx.fillRect( snake.body[i].x * cellSize, snake.body[i].y * cellSize,
             cellSize - 2, cellSize - 2);
     }
+    ctx.fillRect( food.x * cellSize, food.y * cellSize,
+        cellSize - 2, cellSize - 2);
 }
 
 function drawCircle(x,y,r)
