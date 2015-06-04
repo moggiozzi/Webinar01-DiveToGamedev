@@ -51,7 +51,7 @@ function body(x,y){
 function loadPage() {
 	initGame();
     resizeCanvas();
-    setInterval(doStep, 1000 / 30); // 30 кадров в секунду
+    setInterval(doStep, 1000 / 10); // 30 кадров в секунду
 }
 
 function resizeCanvas() {
@@ -68,19 +68,25 @@ function doStep(){
 // обновить состояние игры
 function update() {
     var i;
+    var dx = 0;
+    var dy = 0;
     switch (snake.dir)
     {
         case DIRECTION.DOWN:
-                snake.body.shift();
-                snake.body.push( new body( snake.body[snake.body.length - 1].x, snake.body[snake.body.length - 1].y+1 ));
+            dy = 1;
             break;
         case DIRECTION.UP:
+            dy = -1;
             break;
         case DIRECTION.LEFT:
+            dx = -1;
             break;
         case DIRECTION.RIGHT:
+            dx = 1;
             break;
     }
+    snake.body.shift();
+    snake.body.push( new body( snake.body[snake.body.length - 1].x + dx, snake.body[snake.body.length - 1].y+dy ));
 }
 
 function draw() {
@@ -117,12 +123,16 @@ function keyDown()
 {
     switch (event.keyCode) {
         case KEY.UP:
+            snake.dir = DIRECTION.UP;
             break;
         case KEY.DOWN:
+            snake.dir = DIRECTION.DOWN;
             break;
         case KEY.LEFT:
+            snake.dir = DIRECTION.LEFT;
             break;
         case KEY.RIGHT:
+            snake.dir = DIRECTION.RIGHT;
             break;
         case KEY.SPACE:
         case KEY.ENTER:
