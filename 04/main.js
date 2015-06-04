@@ -18,6 +18,7 @@ var currentTime;
 var lastTime;
 
 function initGame(){
+    var i,j;
     board = new Array(N);
     for (i = 0; i < N; ++i) {
         board[i] = new Array(M);
@@ -26,6 +27,10 @@ function initGame(){
     }
     snake = new Snake();
     currentTime = lastTime = new Date().getTime();
+    newFood();
+}
+function newFood()
+{
     food = new body( Math.ceil( Math.random()*N ), Math.ceil( Math.random() *M ) );
 }
 function copy(obj)
@@ -70,7 +75,7 @@ function doStep(){
 
 // обновить состояние игры
 function update() {
-    var i;
+    var i,j;
     var dx = 0;
     var dy = 0;
     switch (snake.dir)
@@ -88,8 +93,14 @@ function update() {
             dx = 1;
             break;
     }
-    snake.body.shift();
-    snake.body.push( new body( snake.body[snake.body.length - 1].x + dx, snake.body[snake.body.length - 1].y+dy ));
+    j = snake.body[snake.body.length - 1].x + dx;
+    i = snake.body[snake.body.length - 1].y + dy;
+    if ( i == food.y && j == food.x )
+        newFood();
+    else
+        snake.body.shift(); // удалить хвост
+    snake.body.push( new body(j,i));
+
 }
 
 function draw() {
