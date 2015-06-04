@@ -9,8 +9,29 @@ var dy = 10;
 
 var KEY = { UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, ENTER: 13, SPACE: 32, ESC: 27 };
 
+var N = 10;
+var M = 10;
+var board;
+var snake = new Array();
+function initGame(){
+    board = new Array(N);
+    for (i = 0; i < N; ++i) {
+        board[i] = new Array(M);
+        for (j = 0; j < M; ++j)
+            board[i][j] = 0;
+    }
+    snake.push(new body(0,0));
+    snake.push(new body(0,1));
+    snake.push(new body(0,2));
+}
+
+function body(x,y){
+    this.x = x;
+    this.y = y;
+}
 
 function loadPage() {
+	initGame();
     resizeCanvas();
     setInterval(doStep, 1000 / 30); // 30 кадров в секунду
 }
